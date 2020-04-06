@@ -219,9 +219,12 @@ function drawMap(us, clients, states, stateNames) {
     path = d3.geoPath().projection(projection);
     d3.select(".mapGroup").html("")
     renderMap();
+    d3.select(".legend").remove()
+    drawLegend();
   } 
 
   renderMap();
+  drawLegend();
 
   function renderMap(){
     mapGroup
@@ -302,6 +305,7 @@ function brushend() {
   console.log("end");
 }
 
+function drawLegend(){
 // Adds an SVG for the map's legend
 var legend = svg
   .append("g")
@@ -337,3 +341,4 @@ legend
   .attr("y", 9)
   .attr("dy", ".35em")
   .text(function(d) { return d.label});
+}
