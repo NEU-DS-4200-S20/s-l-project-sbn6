@@ -16,15 +16,21 @@ var svg2 = d3
   .attr("width", width)
   .attr("height", height);
 
-// define map projection for map viz
-var projection = d3   
+var newEnglandProjection = d3   
 .geoMercator()   
 .translate([width*4.2,height*5.3])   
 .scale(2800);
 
+var massProjection = d3.
+  geoMercator()
+  .translate([width*4.2,height*5.3])
+  .scale(3000);
+
+// define map projection for map viz
+var projection = massProjection;
+
 // define path
 var path = d3.geoPath().projection(projection);
-
 
 // chain calling of drawMap to handle drawing the map viz
 d3.json("data/us.json", function(us) {
@@ -199,61 +205,78 @@ function drawMap(us, clients, states, stateNames) {
     }
   }
 
-  
-  mapGroup
-    .append("g")
-    // .attr("id", "states")
-    .selectAll("path")
-    .data(topojson.feature(us, us.objects.states).features)
-    .enter()
-    .append("path")
-    .attr("d", path)
-    .attr("fill", fillFunction)
-    .attr("class", "states")
+  d3.select("#changeMap")
+    .on("click",changeMap)
+ 
+  function changeMap(){
+    if(projection == newEnglandProjection){
+      projection = massProjection;
+    }else{
+      projection = newEnglandProjection;
+    }
+    
+    path = d3.geoPath().projection(projection);
+    d3.select(".mapGroup").html("")
+    renderMap();
+  } 
 
-    // For debugging purposes, add:
+  renderMap();
 
-    // .on('mouseover', function(d) {
-    //   // console.log("mouseover state", d)
-    //   // console.log(this)
-    //   let state = d3.select(this);
-    //   state.attr("fill", "red");
-    // })
-    // .on('mouseout', function(d) {
-    //   let state = d3.select(this);
-    //   state.attr("fill", fillFunction);
-    // });
+  function renderMap(){
+    mapGroup
+      .append("g")
+      // .attr("id", "states")
+      .selectAll("path")
+      .data(topojson.feature(us, us.objects.states).features)
+      .enter()
+      .append("path")
+      .attr("d", path)
+      .attr("fill", fillFunction)
+      .attr("class", "states")
 
-    // Add state borders to mapGroup
-  mapGroup
-    .append("path")
-    .datum(
-      topojson.mesh(us, us.objects.states, function(a, b) {
-        return a !== b;
+      // For debugging purposes, add:
+
+      // .on('mouseover', function(d) {
+      //   // console.log("mouseover state", d)
+      //   // console.log(this)
+      //   let state = d3.select(this);
+      //   state.attr("fill", "red");
+      // })
+      // .on('mouseout', function(d) {
+      //   let state = d3.select(this);
+      //   state.attr("fill", fillFunction);
+      // });
+
+      // Add state borders to mapGroup
+    mapGroup
+      .append("path")
+      .datum(
+        topojson.mesh(us, us.objects.states, function(a, b) {
+          return a !== b;
+        })
+      )
+      .attr("id", "state-borders")
+      .attr("d", path);
+
+      // Add circles for each business in the client CSV
+    var circles = mapGroup
+      .selectAll("circle")
+      .data(clients)
+      .enter()
+      .append("circle")
+      .attr("class", "cities")
+      // CX is the longitutde
+      .attr("cx", function(d) {
+        return projection([d.lon, d.lat])[0];
       })
-    )
-    .attr("id", "state-borders")
-    .attr("d", path);
-
-    // Add circles for each business in the client CSV
-  var circles = svg
-    .selectAll("circle")
-    .data(clients)
-    .enter()
-    .append("circle")
-    .attr("class", "cities")
-    // CX is the longitutde
-    .attr("cx", function(d) {
-      return projection([d.lon, d.lat])[0];
-    })
-    // CY is the latitude
-    .attr("cy", function(d) {
-      return projection([d.lon, d.lat])[1];
-    })
-    // Radius of the dots
-    .attr("r", 7);
-  svg.append("g").call(brush);
-
+      // CY is the latitude
+      .attr("cy", function(d) {
+        return projection([d.lon, d.lat])[1];
+      })
+      // Radius of the dots
+      .attr("r", 7);
+      svg.append("g").call(brush);
+  }
 }
 
 // Handles highlighting of selected circles from the brush
