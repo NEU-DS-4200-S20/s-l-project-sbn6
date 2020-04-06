@@ -11,8 +11,8 @@ var svg = d3
 
 // define svg2 container for 2nd visualization
 var svg2 = d3
-  .select("#vis-2")
-  .append("svg")
+  .select("#svg-2")
+  .append("g")
   .attr("width", width)
   .attr("height", height);
 
@@ -23,11 +23,11 @@ var newEnglandProjection = d3
 
 var massProjection = d3.
   geoMercator()
-  .translate([width*4.2,height*5.3])
-  .scale(3000);
+  .translate([width*13.5,height*16.8])
+  .scale(10000);
 
 // define map projection for map viz
-var projection = massProjection;
+var projection = newEnglandProjection;
 
 // define path
 var path = d3.geoPath().projection(projection);
@@ -214,7 +214,8 @@ function drawMap(us, clients, states, stateNames) {
     }else{
       projection = newEnglandProjection;
     }
-    
+    d3.selectAll(".selection")
+      .remove();
     path = d3.geoPath().projection(projection);
     d3.select(".mapGroup").html("")
     renderMap();
@@ -274,7 +275,7 @@ function drawMap(us, clients, states, stateNames) {
         return projection([d.lon, d.lat])[1];
       })
       // Radius of the dots
-      .attr("r", 7);
+      .attr("r", 4);
       svg.append("g").call(brush);
   }
 }
