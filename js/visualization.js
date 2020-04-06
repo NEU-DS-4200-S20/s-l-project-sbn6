@@ -79,6 +79,10 @@ function drawBar(clients){
       .rollup(function(v){return v.length})
       .entries(clients)
 
+   var myColor = d3.scaleOrdinal().domain(
+      clientPerIndustry.length
+      ).range(d3.schemeSet2);
+
   console.log(clientPerIndustry)
 
   x.domain(clientPerIndustry.map(function(d){return d.key}));
@@ -99,7 +103,9 @@ function drawBar(clients){
       .attr("x",function(d){
         return x(d.key)
       })
-      .style("fill", "orange"); //enter a color here
+      .style("fill", function(d){
+        return myColor(d.key)
+      }); //enter a color here
   space.append("g")
     .attr("transform", "translate(0," + bHeight + ")")
     .call(d3.axisBottom(x));
@@ -207,16 +213,30 @@ function drawMap(us, clients, states, stateNames) {
 
   d3.select("#changeMap")
     .on("click",changeMap)
- 
+  
   function changeMap(){
+    
     if(projection == newEnglandProjection){
       projection = massProjection;
     }else{
       projection = newEnglandProjection;
     }
-    d3.selectAll(".selection")
-      .remove();
+
     path = d3.geoPath().projection(projection);
+    
+    /*
+    d3.select(".mapGroup").selectAll("path").transition().duration(1000)
+      .attr("d",path)
+    */
+    d3.select(".mapGroup").selectAll("circle").transition().duration(1000)
+    .attr("cx", function(d) {
+        return projection([d.lon, d.lat])[0];
+      })
+    .attr("cy", function(d) {
+        return projection([d.lon, d.lat])[1];
+      })
+   //d3.selectAll(".selection")
+    //  .remove();
     d3.select(".mapGroup").html("")
     renderMap();
     d3.select(".legend").remove()
@@ -263,6 +283,16 @@ function drawMap(us, clients, states, stateNames) {
       .attr("d", path);
 
       // Add circles for each business in the client CSV
+    console.log();
+    var myColor = d3.scaleOrdinal().domain(
+
+      d3.nest()
+      .key(function(d){return d.Industry})
+      .rollup(function(v){return v.length})
+      .entries(clients).length
+
+      ).range(d3.schemeSet2);
+
     var circles = mapGroup
       .selectAll("circle")
       .data(clients)
@@ -277,8 +307,9 @@ function drawMap(us, clients, states, stateNames) {
       .attr("cy", function(d) {
         return projection([d.lon, d.lat])[1];
       })
-      // Radius of the dots
-      .attr("r", 4);
+      .attr("r", 4)
+      .attr('fill', function(d){return myColor(d.Industry)});
+
       svg.append("g").call(brush);
   }
 }

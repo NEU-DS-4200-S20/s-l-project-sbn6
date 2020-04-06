@@ -118,7 +118,7 @@ h1, h2, h3 {
 }
 
 .cities {
-  fill: orange;
+  /*fill: orange;*/
 }
 
 circle.selected {
