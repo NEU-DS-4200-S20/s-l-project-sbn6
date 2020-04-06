@@ -4,14 +4,14 @@ var height = 500;
 
 // define the svg container
 var svg = d3
-  .select("#map-container")
-  .append("svg")
+  .select("#vis-svg")
+  .append("g")
   .attr("width", width)
   .attr("height", height);
 
 // define svg2 container for 2nd visualization
 var svg2 = d3
-  .select("#chart-container")
+  .select("#vis-2")
   .append("svg")
   .attr("width", width)
   .attr("height", height);
@@ -27,13 +27,13 @@ var path = d3.geoPath().projection(projection);
 
 
 // chain calling of drawMap to handle drawing the map viz
-d3.json("us.json", function(us) {
+d3.json("data/us.json", function(us) {
   //Error
   d3.csv("data/sbn-data-cleaned.csv", function(clients) {
     d3.csv("data/sbn-states.csv", function(states) {
       d3.tsv("data/us-state-names.tsv", function(stateNames) {
         drawMap(us, clients, states, stateNames);
-        // drawChart(clients);
+        drawBar(clients)
       });
     });
   });
@@ -45,7 +45,63 @@ var brush = d3
   .on("start brush", highlight)
   .on("end", brushend);
 
+function drawBar(clients){
+  let margin = {
+    top: 20,
+    right: 30,
+    bottom: 40,
+    left: 30
+  }
+  bWidth = width - margin.left - margin.right;
+  bHeight = height - margin.top - margin.bottom;
 
+  var x = d3.scaleBand()
+      .range([0,bWidth])
+      .padding(0.1)
+
+  var y = d3.scaleLinear()
+      .range([bHeight,0]);
+
+  var space = svg2.append("g")
+    .attr("width", bWidth + margin.left + margin.right)
+    .attr("height", bHeight + margin.top + margin.bottom)
+    .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+
+  var clientPerIndustry = d3.nest()
+      .key(function(d){return d.Industry})
+      .rollup(function(v){return v.length})
+      .entries(clients)
+
+  console.log(clientPerIndustry)
+
+  x.domain(clientPerIndustry.map(function(d){return d.key}));
+
+  y.domain([0,d3.max(clientPerIndustry, function(d){return d.value;})]);
+
+  var barchart = space.selectAll("rect")
+      .data(clientPerIndustry)
+      .enter()
+      .append("rect")
+      .attr("y",function(d){
+        return y(d.value)
+      })
+      .attr("height", function(d) { 
+          return bHeight - y(d.value)
+      })
+      .attr("width",x.bandwidth())
+      .attr("x",function(d){
+        return x(d.key)
+      })
+      .style("fill", "orange"); //enter a color here
+  space.append("g")
+    .attr("transform", "translate(0," + bHeight + ")")
+    .call(d3.axisBottom(x));
+
+  space.append("g")
+    .call(d3.axisLeft(y));
+
+}
 
 // Below is from the starter code from demo, which we may or may not use
 
