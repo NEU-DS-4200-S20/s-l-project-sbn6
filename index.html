@@ -52,14 +52,13 @@
     <button id="changeMap">Zoom Into Massachusetts</button>
     <!-- Change viewbox to whatever you want, e.g. "0 0 1000 6000" This determines your aspect ratio and coordinate system -->    
     <!-- Delete all the sample SVG code below after the viewbox to before the closing tag. Populate this part of the SVG with D3. -->
-    <svg id="vis-svg"
-      preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 821 520">
-    
-    <!-- Don't delete the closing tag! -->
-    </svg>
-
-    <div class="table-holder">
-    </div>
+    <div id = "top-of-vis" style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+      <svg id="vis-svg"
+        preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 800 520" style = "height:600px; flex: 6 0 600px">
+      </svg>
+      <div class="table-holder" style='height:600px; flex: 4 0 200px; overflow-y:auto;'>
+      </div>
+  </div>
 
     <svg id="svg-2" preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 960 520">
     </svg>

@@ -5,9 +5,7 @@ var height = 500;
 // define the svg container
 var svg = d3
   .select("#vis-svg")
-  .append("g")
-  .attr("width", width)
-  .attr("height", height);
+  .append("g");
 
 // define svg2 container for 2nd visualization
 var svg2 = d3
@@ -330,6 +328,23 @@ function highlight() {
       y0 <= projection([d.lon, d.lat])[1] &&
       projection([d.lon, d.lat])[1] <= y1
   );
+
+  table = d3.selectAll('table');
+  item = d3.selectAll('tbody');
+
+  sel = []
+  selectedDots = d3.selectAll('.cities.selected').each(function(d,i){
+    sel.push(d["Name of Business or Organization"])
+  })
+
+
+  item.selectAll('tr')
+  .style("background-color",function(d){
+    if(sel.includes(d["Name of Business or Organization"])){
+      return "orange";
+    }
+  });
+
 }
 
 function brushend() {
