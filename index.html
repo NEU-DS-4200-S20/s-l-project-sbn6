@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   
   <!-- Title -->
-  <title>Project Team #: SBN 6 Client Map, DS 4200 S20</title>
+  <title>Project Team #6: SBN Client Map, DS 4200 S20</title>
   
   <!-- CSS Styling -->
   <link rel="stylesheet" href="style.css">
@@ -40,7 +40,7 @@
     
     <h1>Motivation</h1>
     
-    <p>Our project is about assisting the Sustainable Business Network by creating a visual representation of their member database. SBN has demonstrated a need for an easy and visual way for them to connect their members with their prospective clients. We hope to address this need by creating an easy-to-search and easy-to-browse way of finding
+    <p>Our project is about assisting the Sustainable Business Network by creating a visual representation of their member database. SBN has demonstrated a need for an easy and visual way for them to connect their members with their prospective clients. We hope to address this need by creating an easy-to-search and easy-to-browse way of finding businesses of different categories to work and source products and services from.</p>
     
     
     <h1>Visualization</h1>
@@ -57,6 +57,10 @@
     
     <!-- Don't delete the closing tag! -->
     </svg>
+
+    <div class="table-holder" style='height: 300px; overflow-y:auto;'>
+    </div>
+
     <svg id="svg-2" preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 960 520">
     </svg>
   </div>
@@ -75,10 +79,17 @@
 
     <h1>Visualization explanation</h1>
 
-     <p> Currently, we have our data being loaded onto a map of New England. Each point is the location of an SBN member business. The user has the ability to highlight these points for use in linking to future vizualisation(s). In addition, each state on the map is color-coded based on whether or not an SBN member business is present in that state: blue means there is, grey means there is not. </p>
-    
+    <p>Our visualization is composed of three main parts: the map, the table, and the bar chart. All of these visualizations are linked together, with brushing between them. With the dataset that we recieved, we felt the best way to accomplish the goal of finding and browsing SBN businesses for potential clients would be this comprehensive view. </p>
+
+    <p>The map allows potential clients to browse their local area and locate businesses near them, select them by dragging a box around them, and have the details of those businesses represented in both the bar chart and the table. The points on the map are color-coded by business type, which is consistent with the colors used by the bar chart, allowing for someone browsing the map to get an idea of where the closest business with a certain type is to them. States are color-coded by whether or not a state has an SBN business inside of it: blue if so, grey if not. </p>
+
+    <p>From the table, one can browse the names, categories, locations, and other details of the businesses that have been plotted on the map. If nothing on the map is selected, this will be a list of all businesses in the dataset sorted alphabetically by name. When a selection is made on the map, the selected businesses are displayed on the table, while all other businesses are filtered out. This allows a user to specify a certain area on the map and recieve information on all businesses in the selected area. Clicking on a business on the table will highlight its location on the map by lowering the occupacity of all other points and turning them to grey, making the selected business very easily located. </p>
+
+    <p>Lastly is the bar chart. By default, it displays a breakdown of all dataset businsesses by business category, allowing SBN to get an idea of what areas they have many businesses and which they are lacking in. Selecting a certain area of the map changes the bar chart's dataset to be exclusive to the businesses in that area of the map, allowing SBN to perform the same task previously mentioned on certain areas of interest. As mentioned previously, the colors of the bar chart are consistent with the colors of the business points on the map.</p>
+	<!-- TODO: THIS SECTION -->    
     <p><em>Final visualization screenshots (PNG images), design justifications, UI walk-through, and linked presentation slides.</em></p>
 
+    <!-- TODO: GOOGLE DOC UPLOADS FOR THIS SECTION -->    
     <h1>Data Analysis</h1>
     <p><em>Summary of data, data types, and data preprocessing.</em></p>
 
@@ -114,6 +125,7 @@
       <li><a href="https://d3js.org/">D3: Data-Driven Documents</a> by Mike Bostock.</li>
       <li><a href="https://codepo8.github.io/css-fork-on-github-ribbon/#">Pure CSS responsive "Fork me on GitHub" ribbon</a> by Chris Heilmann.</li>
       <li>Aditya and Prof. Cashman's demos on brushing and linking a map in D3</li>
+      <li><a href="https://gist.github.com/jfreels/6814721"> Easy D3 table implementation</a> by jfreels on GitHub</li>
     </ul>
     
   </div>

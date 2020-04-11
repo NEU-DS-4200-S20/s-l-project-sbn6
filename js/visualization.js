@@ -18,12 +18,12 @@ var svg2 = d3
 
 var newEnglandProjection = d3   
 .geoMercator()   
-.translate([width*4.2,height*5.3])   
+.translate([4032,2650])   
 .scale(2800);
 
 var massProjection = d3.
   geoMercator()
-  .translate([width*13.5,height*16.8])
+  .translate([12960,8400])
   .scale(10000);
 
 // define map projection for map viz
@@ -373,3 +373,48 @@ legend
   .attr("dy", ".35em")
   .text(function(d) { return d.label});
 }
+
+
+// Stuff for table
+// Source: https://gist.github.com/jfreels/6814721
+var tabulate = function (data,columns) {
+  // TODO: fix this to place this correctly on the page
+  var table = d3.select('.table-holder').append('table')
+  var thead = table.append('thead')
+  var tbody = table.append('tbody')
+
+  thead.append('tr')
+    .selectAll('th')
+      .data(columns)
+      .enter()
+    .append('th')
+      .text(function (d) { return d })
+
+  var rows = tbody.selectAll('tr')
+      .data(data)
+      .enter()
+    .append('tr')
+
+  var cells = rows.selectAll('td')
+      .data(function(row) {
+        return columns.map(function (column) {
+          return { column: column, value: row[column] }
+        })
+      })
+      .enter()
+    .append('td')
+      .text(function (d) { 
+        // Modified so if value is missing, "Unkown" is entered instead
+        if (d.value == "") {
+          return "Unkown"
+        }
+
+        return d.value })
+
+  return table;
+}
+
+d3.csv('/data/sbn-data-cleaned.csv', function (data) {
+  var columns = ["Name of Business or Organization", "Industry", "Product or Service", "Address (City)", "Address (State)"]
+  tabulate(data,columns)
+})

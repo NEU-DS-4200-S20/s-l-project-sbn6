@@ -124,3 +124,16 @@ h1, h2, h3 {
 circle.selected {
   fill: red;
 }
+
+.table-holder {
+  width: 40%;
+  /* TODO: Fix height eventually */
+  height: 300px; 
+  overflow-y:auto;
+}
+
+th, td {
+  border-bottom: 1px solid #ddd;
+  padding: 8px;
+}
+
