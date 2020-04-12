@@ -429,7 +429,7 @@ var tabulate = function (data,columns) {
   return table;
 }
 
-d3.csv('/data/sbn-data-cleaned.csv', function (data) {
-  var columns = ["Name of Business or Organization", "Industry", "Product or Service", "Address (City)", "Address (State)"]
-  tabulate(data,columns)
+d3.csv('data/sbn-data-cleaned.csv', function (data) {
+  var columns = ["Name of Business or Organization", "Industry", "Product or Service", "Address (City)", "Address (State)"];
+  tabulate(data,columns);
 })
