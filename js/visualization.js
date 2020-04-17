@@ -37,7 +37,7 @@ d3.json("data/us.json", function(us) {
     d3.csv("data/sbn-states.csv", function(states) {
       d3.tsv("data/us-state-names.tsv", function(stateNames) {
         drawMap(us, clients, states, stateNames);
-        drawBar(clients,clients)
+        drawBar(clients)
       });
     });
   });
@@ -49,7 +49,7 @@ var brush = d3
   .on("start brush", highlight)
   .on("end", brushend);
 
-function drawBar(clients){
+function drawBar(clients,normalColor = true){
   svg2.select('g').data([]).exit().remove();
 
   let margin = {
@@ -88,7 +88,7 @@ function drawBar(clients){
 
   space.exit().remove();
 
-  const t = d3.transition().duration(750);
+  const t = d3.transition().duration(200);
 
   space.transition(t);
   x.domain(clientPerIndustry.map(function(d){return d.key}));
@@ -110,7 +110,11 @@ function drawBar(clients){
         return x(d.key)
       })
       .style("fill", function(d){
-        return myColor(d.key)
+        if(normalColor){
+           return myColor(d.key);
+        }else{
+          return "#e04e22";
+        }
       }); //enter a color here
 
   barchart.transition(t)
@@ -243,6 +247,7 @@ function drawMap(us, clients, states, stateNames) {
     d3.select(".mapGroup").selectAll("path").transition().duration(1000)
       .attr("d",path)
     */
+    d3.select(".brush").remove();
     d3.select(".mapGroup").selectAll("circle").transition().duration(1000)
     .attr("cx", function(d) {
         return projection([d.lon, d.lat])[0];
@@ -324,7 +329,7 @@ function drawMap(us, clients, states, stateNames) {
       .attr("r", 4)
       .attr('fill', function(d){return myColor(d.Industry)});
 
-      svg.append("g").call(brush);
+      svg.append("g").call(brush).attr("class","brush");
   }
 }
 
@@ -355,13 +360,10 @@ function highlight() {
 
 
   item.selectAll('tr')
-  .style("background-color",function(d){
-    if(sel.includes(d["Name of Business or Organization"])){
-      return "orange";
-    }
-  });
+  .classed("selectedRow",d => sel.includes(d["Name of Business or Organization"]))
+
   if(d3.selectAll('.cities.selected').data().length > 0){
-    drawBar(d3.selectAll('.cities.selected').data());
+    drawBar(d3.selectAll('.cities.selected').data(),false);
   }else{
     drawBar(circles.data());
   }
@@ -383,7 +385,6 @@ var legend = svg
   .selectAll("g")
   // Determine legend meaning from color attr
   .data([
-    {'color': 'orange', 'label': 'SBN Business Locations'}, 
     {'color': 'gray', 'label': 'States with No SBN Members'},
     {'color': 'blue', 'label': 'States with SBN Memebers'}
   ])
@@ -439,22 +440,16 @@ var tabulate = function (data,columns) {
     .on("mousedown",function(d) {
       let row = d3.select(this)
       console.log(event.target.parentNode)
+
       dragTarget = event.target.parentNode
       htmlHover = d3.select(hoverTarget);
       erase = !htmlHover.classed("selectedRow");
       htmlHover.classed("selectedRow",erase);
-
-      if(row.attr("class") == "selectedRow"){
-        row.attr("class","");
-      }else{
-        row.attr("class","selectedRow")
-      }
-      linkMap(d, hoverTarget)
     })
     .on("mousemove",function(d){
        hoverTarget = event.target.parentNode;
        if(dragTarget){
-          //linkToMap();
+          linkMap(tbody);
           if(dragTarget){
             d3.select(hoverTarget).classed("selectedRow",erase);
           }
@@ -463,6 +458,7 @@ var tabulate = function (data,columns) {
     })
     .on("mouseup",function(d){
       dragTarget = null;
+      linkMap(tbody);
     })
 
   var cells = rows.selectAll('td')
@@ -484,14 +480,22 @@ var tabulate = function (data,columns) {
   return table;
 }
 
-function linkMap(tableData, tableRow) {
-  console.log("teapot", table);
+function linkMap(body) {
+
+  se = []
+  body.selectAll("tr.selectedRow").each(function(d,i){
+    se.push(d["Name of Business or Organization"])
+  })
 
   d3.selectAll("circle")
-  .classed("selected", d =>
-    d["Name of Business or Organization"] == tableData["Name of Business or Organization"]
-    && tableRow.className == "selectedRow"
-    );
+  .classed("selected", d => se.includes(d["Name of Business or Organization"]));
+
+  if(body.selectAll('tr.selectedRow').data().length > 0){
+    drawBar(body.selectAll('tr.selectedRow').data(),false);
+  }else{
+    drawBar(clients);
+  }
+  
 }
  
 d3.csv('data/sbn-data-cleaned.csv', function (data) {
