@@ -137,3 +137,7 @@ th, td {
   padding: 8px;
 }
 
+iframe {
+  width: 60%
+  height: 45%;
+}
