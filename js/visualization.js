@@ -436,13 +436,20 @@ var tabulate = function (data,columns) {
       .data(data)
       .enter()
     .append('tr')
-    .on("mousedown",function(d){
-      let row = d3.select(this);
-      console.log(event.target.parentNode);
-      dragTarget = event.target.parentNode;
+    .on("mousedown",function(d) {
+      let row = d3.select(this)
+      console.log(event.target.parentNode)
+      dragTarget = event.target.parentNode
       htmlHover = d3.select(hoverTarget);
       erase = !htmlHover.classed("selectedRow");
       htmlHover.classed("selectedRow",erase);
+
+      if(row.attr("class") == "selectedRow"){
+        row.attr("class","");
+      }else{
+        row.attr("class","selectedRow")
+      }
+      linkMap(d, hoverTarget)
     })
     .on("mousemove",function(d){
        hoverTarget = event.target.parentNode;
@@ -452,6 +459,7 @@ var tabulate = function (data,columns) {
             d3.select(hoverTarget).classed("selectedRow",erase);
           }
        }
+      
     })
     .on("mouseup",function(d){
       dragTarget = null;
@@ -476,6 +484,16 @@ var tabulate = function (data,columns) {
   return table;
 }
 
+function linkMap(tableData, tableRow) {
+  console.log("teapot", table);
+
+  d3.selectAll("circle")
+  .classed("selected", d =>
+    d["Name of Business or Organization"] == tableData["Name of Business or Organization"]
+    && tableRow.className == "selectedRow"
+    );
+}
+ 
 d3.csv('data/sbn-data-cleaned.csv', function (data) {
   var columns = ["Name of Business or Organization", "Industry", "Product or Service", "Address (City)", "Address (State)"];
   tabulate(data,columns);
