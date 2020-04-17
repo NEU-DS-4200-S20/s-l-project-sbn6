@@ -113,7 +113,7 @@ function drawBar(clients,normalColor = true){
         if(normalColor){
            return myColor(d.key);
         }else{
-          return "#e04e22";
+          return "#8dd6c2";
         }
       }); //enter a color here
 
