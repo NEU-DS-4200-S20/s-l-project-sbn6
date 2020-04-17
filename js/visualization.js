@@ -113,7 +113,7 @@ function drawBar(clients,normalColor = true){
         if(normalColor){
            return myColor(d.key);
         }else{
-          return "#8dd6c2";
+          return "#1f9173";
         }
       }); //enter a color here
 
@@ -385,7 +385,7 @@ var legend = svg
   .selectAll("g")
   // Determine legend meaning from color attr
   .data([
-    {'color': 'blue', 'label': 'States with SBN Memebers'},
+    {'color': 'darkgreen', 'label': 'States with SBN Memebers'},
     {'color': 'gray', 'label': 'States with No SBN Members'}
   ])
   .enter()

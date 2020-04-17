@@ -122,7 +122,7 @@ h1, h2, h3 {
 }
 
 circle.selected {
-  fill: #8dd6c2;
+  fill: #1f9173;
 }
 
 td{
@@ -130,7 +130,7 @@ td{
 }
 
 .selectedRow {
-  background-color:#8dd6c2;
+  background-color:#1f9173;
 }
 
 .table-holder {
