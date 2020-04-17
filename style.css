@@ -96,7 +96,7 @@ h1, h2, h3 {
 
 #changeMap{
   color:white;
-  background-color: blue;
+  background-color: forestgreen;
   border:none;
   border-radius: 3px;
   padding: 3px;
@@ -106,7 +106,7 @@ h1, h2, h3 {
 }
 
 #changeMap:hover{
-  background-color: darkblue;
+  background-color: darkolivegreen;
 }
 #state-borders {
   fill: none;

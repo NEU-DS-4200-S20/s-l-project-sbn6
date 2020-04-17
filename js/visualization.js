@@ -224,7 +224,7 @@ function drawMap(us, clients, states, stateNames) {
     let isVisited = statesVisitedAbv.includes(stateCode);
 
     if (isVisited) {
-      return 'blue';
+      return 'darkgreen';
     } else {
       return 'gray';
     }
