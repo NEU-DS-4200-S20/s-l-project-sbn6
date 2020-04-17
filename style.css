@@ -125,6 +125,10 @@ circle.selected {
   fill: red;
 }
 
+td{
+  user-select: none;
+}
+
 .selectedRow {
   background-color:red;
 }

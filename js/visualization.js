@@ -429,31 +429,32 @@ var tabulate = function (data,columns) {
 
   var dragTarget = null;
   var hoverTarget = null;
+  var htmlHover = null;
+  var erase = false;
 
   var rows = tbody.selectAll('tr')
       .data(data)
       .enter()
     .append('tr')
     .on("mousedown",function(d){
-      let row = d3.select(this)
-      console.log(event.target.parentNode)
-      dragTarget = event.target.parentNode
-
-      if(row.attr("class") == "selectedRow"){
-        row.attr("class","");
-      }else{
-        row.attr("class","selectedRow")
-      }
-
+      let row = d3.select(this);
+      console.log(event.target.parentNode);
+      dragTarget = event.target.parentNode;
+      htmlHover = d3.select(hoverTarget);
+      erase = !htmlHover.classed("selectedRow");
+      htmlHover.classed("selectedRow",erase);
     })
     .on("mousemove",function(d){
-       hoverTarget = event.target.parentNode
+       hoverTarget = event.target.parentNode;
        if(dragTarget){
-
+          //linkToMap();
+          if(dragTarget){
+            d3.select(hoverTarget).classed("selectedRow",erase);
+          }
        }
     })
     .on("mouseup",function(d){
-      dragTarget = null
+      dragTarget = null;
     })
 
   var cells = rows.selectAll('td')
