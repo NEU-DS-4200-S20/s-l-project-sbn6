@@ -37,7 +37,7 @@ d3.json("data/us.json", function(us) {
     d3.csv("data/sbn-states.csv", function(states) {
       d3.tsv("data/us-state-names.tsv", function(stateNames) {
         drawMap(us, clients, states, stateNames);
-        drawBar(clients)
+        drawBar(clients,clients)
       });
     });
   });
@@ -50,6 +50,8 @@ var brush = d3
   .on("end", brushend);
 
 function drawBar(clients){
+  svg2.select('g').data([]).exit().remove();
+
   let margin = {
     top: 20,
     right: 30,
@@ -66,12 +68,6 @@ function drawBar(clients){
   var y = d3.scaleLinear()
       .range([bHeight,0]);
 
-  var space = svg2.append("g")
-    .attr("width", bWidth + margin.left + margin.right)
-    .attr("height", bHeight + margin.top + margin.bottom)
-    .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
-
   var clientPerIndustry = d3.nest()
       .key(function(d){return d.Industry})
       .rollup(function(v){return v.length})
@@ -81,8 +77,20 @@ function drawBar(clients){
       clientPerIndustry.length
       ).range(d3.schemeSet2);
 
-  console.log(clientPerIndustry)
+  //console.log(clientPerIndustry)
 
+ var space = svg2.append("g")
+    .data(clientPerIndustry)
+    .attr("width", bWidth + margin.left + margin.right)
+    .attr("height", bHeight + margin.top + margin.bottom)
+    .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+
+  space.exit().remove();
+
+  const t = d3.transition().duration(750);
+
+  space.transition(t);
   x.domain(clientPerIndustry.map(function(d){return d.key}));
 
   y.domain([0,d3.max(clientPerIndustry, function(d){return d.value;})]);
@@ -92,10 +100,10 @@ function drawBar(clients){
       .enter()
       .append("rect")
       .attr("y",function(d){
-        return y(d.value)
+        return bHeight + margin.top
       })
       .attr("height", function(d) { 
-          return bHeight - y(d.value)
+          return 0;
       })
       .attr("width",x.bandwidth())
       .attr("x",function(d){
@@ -104,6 +112,15 @@ function drawBar(clients){
       .style("fill", function(d){
         return myColor(d.key)
       }); //enter a color here
+
+  barchart.transition(t)
+  .attr("height", function(d) { 
+          return bHeight - y(d.value)
+      })
+  .attr("y", function(d){
+    return y(d.value);
+  })
+
   space.append("g")
     .attr("transform", "translate(0," + bHeight + ")")
     .call(d3.axisBottom(x));
@@ -281,7 +298,6 @@ function drawMap(us, clients, states, stateNames) {
       .attr("d", path);
 
       // Add circles for each business in the client CSV
-    console.log();
     var myColor = d3.scaleOrdinal().domain(
 
       d3.nest()
@@ -344,6 +360,12 @@ function highlight() {
       return "orange";
     }
   });
+  if(d3.selectAll('.cities.selected').data().length > 0){
+    drawBar(d3.selectAll('.cities.selected').data());
+  }else{
+    drawBar(circles.data());
+  }
+
 
 }
 
@@ -405,10 +427,34 @@ var tabulate = function (data,columns) {
     .append('th')
       .text(function (d) { return d })
 
+  var dragTarget = null;
+  var hoverTarget = null;
+
   var rows = tbody.selectAll('tr')
       .data(data)
       .enter()
     .append('tr')
+    .on("mousedown",function(d){
+      let row = d3.select(this)
+      console.log(event.target.parentNode)
+      dragTarget = event.target.parentNode
+
+      if(row.attr("class") == "selectedRow"){
+        row.attr("class","");
+      }else{
+        row.attr("class","selectedRow")
+      }
+
+    })
+    .on("mousemove",function(d){
+       hoverTarget = event.target.parentNode
+       if(dragTarget){
+
+       }
+    })
+    .on("mouseup",function(d){
+      dragTarget = null
+    })
 
   var cells = rows.selectAll('td')
       .data(function(row) {

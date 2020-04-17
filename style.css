@@ -125,6 +125,10 @@ circle.selected {
   fill: red;
 }
 
+.selectedRow {
+  background-color:red;
+}
+
 .table-holder {
   width: 40%;
   /* TODO: Fix height eventually */
