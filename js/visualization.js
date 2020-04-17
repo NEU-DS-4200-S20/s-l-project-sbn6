@@ -385,8 +385,8 @@ var legend = svg
   .selectAll("g")
   // Determine legend meaning from color attr
   .data([
-    {'color': 'gray', 'label': 'States with No SBN Members'},
-    {'color': 'blue', 'label': 'States with SBN Memebers'}
+    {'color': 'blue', 'label': 'States with SBN Memebers'},
+    {'color': 'gray', 'label': 'States with No SBN Members'}
   ])
   .enter()
   .append("g")
@@ -488,7 +488,9 @@ function linkMap(body) {
   })
 
   d3.selectAll("circle")
-  .classed("selected", d => se.includes(d["Name of Business or Organization"]));
+  .classed("selected", d => se.includes(d["Name of Business or Organization"]))
+
+  d3.selectAll(".selected").raise()
 
   if(body.selectAll('tr.selectedRow').data().length > 0){
     drawBar(body.selectAll('tr.selectedRow').data(),false);
