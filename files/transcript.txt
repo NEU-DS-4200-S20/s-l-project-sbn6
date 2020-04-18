@@ -1,0 +1,9 @@
+There are 3 views of this visualization: the map, the chart, and the bar chart.
+First is the bar chart, which by default will show the breakdown of SBN member businesses by category. This view is linked to the other two, so we’ll see more of it a bit later.
+Next, let’s focus on the map. This map shows which states contain SBN businesses and highlights the locations of those businesses by marking them with dots. 
+The colors of those dots correspond to the colors of business categories on the below bar chart.
+One can highlight a point or group of points by dragging a selection box over them. This highlights them in turquois, which is our chosen highlight color across all views.
+This shows the linking between the map and the other two views: the points highlighted on the map are now highlighted on the table, and the bar chart now shows the breakdown of highlighted businesses only.
+Un-selecting on the map will return all views to their original state.
+Similarly, the chart shows a more condensed view of all SBN member businesses.
+Clicking on one or more member businesses will highlight those rows turquois, their corresponding locations on the map will turn turquois, and the bar chart will display the breakdown of their categories.
