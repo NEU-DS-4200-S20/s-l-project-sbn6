@@ -69,25 +69,35 @@
 
     <h1>Demo Video</h1>
     
-    <video controls width="100%">
-      <source src="/files/Demo.mp4" type="video/mp4">
-      <p>Your browser doesn't support HTML5 video. Here is
-       a <a href="https://youtu.be/SV7vVmIhvR8">link to the video on Youtube</a> instead.</p>
-    </video>
+    <iframe src="/files/Demo.mp4?embedded=true"></iframe>
 
     <h1>Visualization explanation</h1>
 
     <p>Our visualization is composed of three main parts: the map, the table, and the bar chart. All of these visualizations are linked together, with brushing between them. With the dataset that we recieved, we felt the best way to accomplish the goal of finding and browsing SBN businesses for potential clients would be this comprehensive view. </p>
 
-    <p>The map allows potential clients to browse their local area and locate businesses near them, select them by dragging a box around them, and have the details of those businesses represented in both the bar chart and the table. The points on the map are color-coded by business type, which is consistent with the colors used by the bar chart, allowing for someone browsing the map to get an idea of where the closest business with a certain type is to them. States are color-coded by whether or not a state has an SBN business inside of it: blue if so, grey if not. </p>
+    <img src="files/normal.png" alt="Default display" width="800" height="400">
 
-    <p>From the table, one can browse the names, categories, locations, and other details of the businesses that have been plotted on the map. If nothing on the map is selected, this will be a list of all businesses in the dataset sorted alphabetically by name. When a selection is made on the map, the selected businesses are displayed on the table, while all other businesses are filtered out. This allows a user to specify a certain area on the map and recieve information on all businesses in the selected area. Clicking on a business on the table will highlight its location on the map by lowering the occupacity of all other points and turning them to grey, making the selected business very easily located. </p>
+    <p>The map allows potential clients to browse their local area and locate businesses near them, select them by dragging a box around them, and have the details of those businesses represented in both the bar chart and the table. The points on the map are color-coded by business type, which is consistent with the colors used by the bar chart, allowing for someone browsing the map to get an idea of where the closest business with a certain type is to them. States are color-coded by whether or not a state has an SBN business inside of it: green if so, grey if not. </p>
 
-    <p>Lastly is the bar chart. By default, it displays a breakdown of all dataset businsesses by business category, allowing SBN to get an idea of what areas they have many businesses and which they are lacking in. Selecting a certain area of the map changes the bar chart's dataset to be exclusive to the businesses in that area of the map, allowing SBN to perform the same task previously mentioned on certain areas of interest. As mentioned previously, the colors of the bar chart are consistent with the colors of the business points on the map.</p>
-	<!-- TODO: THIS SECTION -->    
-    <p><em>Final visualization screenshots (PNG images), design justifications, UI walk-through, and linked presentation slides.</em></p>
+    <p>From the table, one can browse the names, categories, locations, and other details of the businesses that have been plotted on the map. If nothing on the map is selected, this will be a list of all businesses in the dataset. </p>
 
-    <!-- TODO: GOOGLE DOC UPLOADS FOR THIS SECTION -->    
+    <img src="files/selected-map.png" alt="Display when selected from map" width="800" height="400">
+
+    <p>When a selection is made on the map, the selected businesses are displayed on the table. This allows a user to specify a certain area on the map and recieve information on all businesses in the selected area. </p>
+
+    <img src="files/selected-table.png" alt="Display when selected from table" width="800" height="400">
+
+	<p>Clicking on a business on the table will highlight its location on the map by changing the corresponding location to the turquois higlight color.</p>
+
+	<img src="files/bar-normal.png" alt="Bar chart defualt" width="800" height="400">
+
+    <p>Lastly is the bar chart. By default, it displays a breakdown of all dataset businsesses by business category, allowing SBN to get an idea of what areas they have many businesses and which they are lacking in.</p>
+
+    <img src="files/bar-selected.png" alt="Bar chart whith selected data" width="800" height="400">
+
+	<p>Selecting a certain area of the map changes the bar chart's dataset to be exclusive to the businesses in that area of the map, allowing SBN to perform the same task previously mentioned on certain areas of interest. As mentioned previously, the colors of the bar chart are consistent with the colors of the business points on the map, except when highlighting, where the chart is a single color.
+	</p>
+
     <h1>Data Analysis</h1>
     <p><em>Summary of data, data types, and data preprocessing.</em></p>
 
